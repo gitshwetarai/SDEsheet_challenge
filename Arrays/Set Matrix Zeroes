@@ -1,1 +1,122 @@
+//Brute force Approach
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        vector<vector<int>> arr;
 
+        int row = matrix.size();
+        int col = matrix[0].size();
+
+        for(int i=0; i<row; i++) {
+            for(int j=0; j<col; j++) {
+                if(matrix[i][j]==0) {
+                    
+                    int ind = i-1;
+                    while(ind >= 0) {
+                        if (matrix[ind][j] != 0) 
+                            matrix[ind][j] = -1;
+
+                        ind--;
+                    }
+
+                    ind = i+1;
+                    while(ind < row) {
+                        if (matrix[ind][j] != 0) 
+                            matrix[ind][j] = -1;
+
+                        ind++;
+                    }
+
+                    ind = j-1;
+                    while(ind >= 0) {
+                        if (matrix[i][ind] != 0) 
+                            matrix[i][ind] = -1;
+
+                        ind--;
+                    }
+
+                    ind = j+1;
+                    while(ind < col) {
+                        if (matrix[i][ind] != 0) 
+                            matrix[i][ind] = -1;
+
+                        ind++;
+                    }
+                }
+            }
+        }
+
+        for(int i=0; i<row; i++) {
+            for(int j=0; j<col; j++) {
+                if(matrix[i][j] <= 0)
+                    matrix[i][j] = 0;
+            }
+        }
+    }
+};
+
+//Better Approach
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        
+        int row = matrix.size();
+        int col = matrix[0].size();
+
+        vector<int> temp1(row, -1), temp2(col, -1);
+
+        for(int i=0; i<row; i++) {
+            for(int j=0; j<col; j++) {
+                if(matrix[i][j]==0) {
+                    
+                    temp1[i] = 0;
+                    temp2[j] = 0;
+
+                }
+            }
+        }
+
+        for(int i=0; i<row; i++) {
+            for(int j=0; j<col; j++) {
+                if(temp1[i] == 0 || temp2[j] == 0)
+                    matrix[i][j] = 0;
+            }
+        }
+    }
+};
+
+// Optimization of better approach
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        
+        int row = matrix.size();
+        int col = matrix[0].size();
+        int col0 = 1;
+
+        for(int i=0; i<row; i++) {
+
+            if(matrix[i][0] == 0)
+                col0 = 0;
+
+            for(int j=1; j<col; j++) {
+                if(matrix[i][j]==0) {
+                    
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+
+                }
+            }
+        }
+
+        for(int i=row-1; i>=0; i--) {
+            for(int j=col-1; j>=1; j--) {
+                if(matrix[i][0] == 0 || matrix[0][j] == 0)
+                    matrix[i][j] = 0;
+            }
+
+            if(col0 == 0)
+                matrix[i][0] = 0;
+        }
+    }
+};
